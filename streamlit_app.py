@@ -10,14 +10,17 @@ def apply_edge_detection(image, algorithm, low_threshold=50, high_threshold=150)
         edges = cv2.Canny(gray, low_threshold, high_threshold)
     elif algorithm == "Laplacian":
         edges = cv2.Laplacian(gray, cv2.CV_64F)
-        edges = np.uint8(np.absolute(edges))  # Convert to 8-bit unsigned integer
+        edges = np.uint8(np.absolute(edges))
     elif algorithm == "Sobel":
         sobelx = cv2.Sobel(gray, cv2.CV_64F, 1, 0, ksize=5)
         sobely = cv2.Sobel(gray, cv2.CV_64F, 0, 1, ksize=5)
         edges = np.sqrt(sobelx**2 + sobely**2)
-        edges = np.uint8(edges)  # Convert to 8-bit unsigned integer
+        edges = np.uint8(edges)
     else:
         raise ValueError("Invalid edge detection algorithm")
+
+    # Convert to 3-channel image
+    edges = cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR)
 
     return edges
 
@@ -32,7 +35,7 @@ def main():
         img = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
     else:
         # Default image if no image is uploaded
-        default_image = "default_image.jpg"  # Replace with your image file
+        default_image = "assets/images/content/Identifying Structures in X-Ray Imaging.png"
         img = cv2.imread(default_image)
         
         if img is None:
