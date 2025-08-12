@@ -1,35 +1,41 @@
 import streamlit as st
+import cv2
 import numpy as np
-from PIL import Image
-from skimage import filters
 
-def edge_detection(image, low_threshold, high_threshold):
-    """Applies Canny edge detection using scikit-image."""
-    edges = filters.canny(image, low_threshold=low_threshold, high_threshold=high_threshold)
-    return edges
+# Default image
+default_image = "assets/images/content/Identifying Structures in X-Ray Imaging.png"
 
-st.title("Edge Detection Practice (Scikit-image)")
+# Load the default image
+img = cv2.imread(default_image)
+if img is None:
+    st.error("Error loading default image. Please check the URL.")
+    st.stop()
+img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-# Default Image
-default_image = "assets/images/content/Identifying Structures in X-Ray Imaging.png"  
-# Image Upload
-uploaded_file = st.file_uploader("Upload an image (optional)", type=["jpg", "jpeg", "png"])
-
-# Load Image (uploaded or default)
+# Image upload
+uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 if uploaded_file is not None:
-    image = Image.open(uploaded_file)
-    image = np.array(image)
-else:
-    image = Image.open(default_image)
-    image = np.array(image)
+    img = cv2.imread(uploaded_file)
+    if img is None:
+        st.error("Error loading uploaded image. Please check the file type.")
+        st.stop()
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-# Edge Detection Parameters
+# Sliders for threshold values
 low_threshold = st.slider("Low Threshold", 0, 255, 50)
 high_threshold = st.slider("High Threshold", 0, 255, 150)
 
-# Perform Edge Detection
-edges = edge_detection(image, low_threshold, high_threshold)
+# Edge detection
+edges = cv2.Canny(img, low_threshold, high_threshold)
 
-# Display Images
-st.image(image, caption="Original Image", use_column_width=True)
-st.image(edges, caption="Edge Detected Image", use_column_width=True)
+# Slider to compare original and edge-detected image
+comparison_slider = st.slider(
+    "Compare Original vs. Edge Detected",
+    0.0, 1.0, 0.5
+)
+
+# Combine images for comparison
+combined_image = cv2.addWeighted(img, 1 - comparison_slider, edges, comparison_slider, 0)
+
+# Display images
+st.image([img, combined_image], caption=["Original Image", "Edge Detected Image"])
