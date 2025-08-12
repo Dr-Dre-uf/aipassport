@@ -27,7 +27,7 @@ def main():
             return
     
     # Sliders for thresholds
-    low_threshold = st.slider("Low Threshold", 0, 200, 50)
+    low_threshold = st.slider("Low Threshold", 0, 200, 100)
     high_threshold = st.slider("High Threshold", 0, 255, 150)
 
     # Apply edge detection
