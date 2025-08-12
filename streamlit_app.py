@@ -19,7 +19,7 @@ def main():
         img = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
     else:
         # Default image if no image is uploaded
-        default_image = "assets/images/content/Identifying Structures in X-Ray Imaging.png"
+        default_image = "default_image.jpg"  # Replace with your image file
         img = cv2.imread(default_image)
         
         if img is None:
@@ -33,8 +33,14 @@ def main():
     # Apply edge detection
     edges = apply_edge_detection(img, low_threshold, high_threshold)
 
-    # Display original and edge-detected images
-    st.image([img, edges], caption=["Original Image", "Edge Detected Image"], use_container_width=True)
+    # Slider for blending
+    alpha = st.slider("Blending", 0.0, 1.0, 0.5)
+
+    # Blend the images
+    blended_image = cv2.addWeighted(img, 1 - alpha, edges, alpha, 0)
+
+    # Display original, edge-detected, and blended images
+    st.image([img, edges, blended_image], caption=["Original Image", "Edge Detected Image", "Blended Image"], use_column_width=True)
 
 if __name__ == "__main__":
     main()
