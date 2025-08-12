@@ -12,7 +12,6 @@ st.title("Edge Detection Practice (Scikit-image)")
 
 # Default Image
 default_image = "assets/images/content/Identifying Structures in X-Ray Imaging.png"  
-
 # Image Upload
 uploaded_file = st.file_uploader("Upload an image (optional)", type=["jpg", "jpeg", "png"])
 
