@@ -11,8 +11,7 @@ def edge_detection(image, low_threshold, high_threshold):
 st.title("Edge Detection Practice (Scikit-image)")
 
 # Default Image
-default_image = "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png"  # Replace with your desired default image URL
-st.image(default_image, caption="Default Image", use_container_width=True)
+default_image = "default.png"  # Replace with the actual filename you uploaded
 
 # Image Upload
 uploaded_file = st.file_uploader("Upload an image (optional)", type=["jpg", "jpeg", "png"])
@@ -22,7 +21,6 @@ if uploaded_file is not None:
     image = Image.open(uploaded_file)
     image = np.array(image)
 else:
-    # Load default image if no upload
     image = Image.open(default_image)
     image = np.array(image)
 
