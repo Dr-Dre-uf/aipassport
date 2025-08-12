@@ -38,11 +38,11 @@ def main():
 
     # Display original image in the first column
     with col1:
-        st.image(img, caption="Original Image", use_container_width=True)
+        st.image(img, caption="Original Image", use_column_width=True)
 
     # Display edge-detected image in the second column
     with col2:
-        st.image(edges, caption="Edge Detected Image", use_container_width=True)
+        st.image(edges, caption="Edge Detected Image", use_column_width=True)
 
 if __name__ == "__main__":
     main()
