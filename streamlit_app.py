@@ -33,8 +33,16 @@ def main():
     # Apply edge detection
     edges = apply_edge_detection(img, low_threshold, high_threshold)
 
-    # Display original and edge-detected images
-    st.image([img, edges], caption=["Original Image", "Edge Detected Image"], use_container_width=True)
+    # Create columns for side-by-side display
+    col1, col2 = st.container(2)
+
+    # Display original image in the first column
+    with col1:
+        st.image(img, caption="Original Image", use_container_width=True)
+
+    # Display edge-detected image in the second column
+    with col2:
+        st.image(edges, caption="Edge Detected Image", use_container_width=True)
 
 if __name__ == "__main__":
     main()
