@@ -20,7 +20,7 @@ def main():
             st.error(f"Could not load default image: {default_image}. Please make sure the file exists.")
             return
     
-    st.image(img, caption="Original Image", use_column_width=True)
+    st.image(img, caption="Original Image", use_container_width=True)
 
 if __name__ == "__main__":
     main()
