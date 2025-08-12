@@ -1,28 +1,28 @@
 import streamlit as st
-import cv2
 import numpy as np
 from PIL import Image
+from skimage import filters
 
-def edge_detection(image, threshold1, threshold2):
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    edges = cv2.Canny(gray, threshold1, threshold2)
+def edge_detection(image, sigma):
+    """Applies Sobel edge detection using scikit-image."""
+    edges = filters.sobel(image)
     return edges
 
-st.title("Edge Detection Practice")
+st.title("Edge Detection Practice (Scikit-image)")
 
 # Image Upload
 uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     # Read the image
-    image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
+    image = Image.open(uploaded_file)
+    image = np.array(image)  # Convert to NumPy array
 
     # Edge Detection Parameters
-    threshold1 = st.slider("Threshold 1", 0, 255, 100)
-    threshold2 = st.slider("Threshold 2", 0, 255, 200)
+    sigma = st.slider("Sigma (for Sobel filter)", 0.0, 5.0, 1.0)
 
     # Perform Edge Detection
-    edges = edge_detection(image, threshold1, threshold2)
+    edges = edge_detection(image, sigma)
 
     # Display Images
     st.image(image, caption="Original Image", use_column_width=True)
