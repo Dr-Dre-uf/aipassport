@@ -9,7 +9,7 @@ def apply_edge_detection(image, low_threshold, high_threshold):
     return edges
 
 def main():
-    st.title("Image Edge Detection")
+    st.title("Identifying Structures in X-Ray Imaging")
 
     # Image Upload
     uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
