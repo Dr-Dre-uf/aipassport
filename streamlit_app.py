@@ -3,43 +3,27 @@ import cv2
 import numpy as np
 from PIL import Image
 
-def edge_detection(image, low_threshold, high_threshold):
-    """Performs edge detection on an image using the Canny edge detector."""
-    gray = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2GRAY)  # Convert PIL Image to NumPy array
-    edges = cv2.Canny(gray, low_threshold, high_threshold)
+def edge_detection(image, threshold1, threshold2):
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    edges = cv2.Canny(gray, threshold1, threshold2)
     return edges
 
-def main():
-    """Main function to run the Streamlit app."""
-    st.title("Edge Detection App")
+st.title("Edge Detection Practice")
 
-    # Default image
-    default_image = "https://www.easygifanimator.net/images/cases/video-to-gif-sample.gif"
-    image = st.image(default_image, caption="Default Image", use_container_width=True)
+# Image Upload
+uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 
-    # Image upload
-    uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
-    if uploaded_file is not None:
-        image = Image.open(uploaded_file)  # Open as PIL Image
-        if image is None:
-            st.error("Error: Could not read the uploaded image. Please ensure it's a valid image file.")
-            return
+if uploaded_file is not None:
+    # Read the image
+    image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
 
-    # Threshold sliders
-    low_threshold = st.slider("Low Threshold", 100, 255, 100)
-    high_threshold = st.slider("High Threshold", 100, 255, 150)
+    # Edge Detection Parameters
+    threshold1 = st.slider("Threshold 1", 0, 255, 100)
+    threshold2 = st.slider("Threshold 2", 0, 255, 200)
 
-    # Edge detection
-    if image is not None:
-        edges = edge_detection(image, low_threshold, high_threshold)
+    # Perform Edge Detection
+    edges = edge_detection(image, threshold1, threshold2)
 
-        with st.container():
-            col1, col2 = st.columns(2)
-            with col1:
-                st.image(image, caption="Original Image", use_container_width=True)
-            with col2:
-                st.image(edges, caption="Edge Detected Image", use_container_width=True)
-
-
-if __name__ == "__main__":
-    main()
+    # Display Images
+    st.image(image, caption="Original Image", use_column_width=True)
+    st.image(edges, caption="Edge Detected Image", use_column_width=True)
