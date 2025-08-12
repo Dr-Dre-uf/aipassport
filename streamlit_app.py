@@ -6,7 +6,7 @@ def main():
     st.title("Image Edge Detection")
 
     # Default image
-    default_image = "default_image.jpg"  # Replace with your image file
+    default_image = "assets/images/content/Identifying Structures in X-Ray Imaging.png"  # Replace with your image file
     img = cv2.imread(default_image)
     
     if img is None:
