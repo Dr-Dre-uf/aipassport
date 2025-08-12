@@ -11,7 +11,7 @@ def edge_detection(image, low_threshold, high_threshold):
 st.title("Edge Detection Practice (Scikit-image)")
 
 # Default Image
-default_image = "default.png"  # Replace with the actual filename you uploaded
+default_image = "assets/images/content/Identifying Structures in X-Ray Imaging.png"  # Replace with the actual filename you uploaded
 
 # Image Upload
 uploaded_file = st.file_uploader("Upload an image (optional)", type=["jpg", "jpeg", "png"])
