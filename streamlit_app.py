@@ -33,14 +33,8 @@ def main():
     # Apply edge detection
     edges = apply_edge_detection(img, low_threshold, high_threshold)
 
-    # Slider for blending
-    alpha = st.slider("Blending", 0.0, 1.0, 0.5)
-
-    # Blend the images
-    blended_image = cv2.addWeighted(img, 1 - alpha, edges, alpha, 0)
-
-    # Display original, edge-detected, and blended images
-    st.image([img, edges, blended_image], caption=["Original Image", "Edge Detected Image", "Blended Image"], use_column_width=True)
+    # Display original and edge-detected images
+    st.image([img, edges], caption=["Original Image", "Edge Detected Image"], use_column_width=True)
 
 if __name__ == "__main__":
     main()
