@@ -34,7 +34,7 @@ def main():
     edges = apply_edge_detection(img, low_threshold, high_threshold)
 
     # Create columns for side-by-side display
-    col1, col2 = st.column(2)
+    col1, col2 = st.columns(2)
 
     # Display original image in the first column
     with col1:
