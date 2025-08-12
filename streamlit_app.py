@@ -3,27 +3,36 @@ import numpy as np
 from PIL import Image
 from skimage import filters
 
-def edge_detection(image, sigma):
-    """Applies Sobel edge detection using scikit-image."""
-    edges = filters.sobel(image)
+def edge_detection(image, low_threshold, high_threshold):
+    """Applies Canny edge detection using scikit-image."""
+    edges = filters.canny(image, low_threshold=low_threshold, high_threshold=high_threshold)
     return edges
 
 st.title("Edge Detection Practice (Scikit-image)")
 
+# Default Image
+default_image = "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png"  # Replace with your desired default image URL
+st.image(default_image, caption="Default Image", use_container_width=True)
+
 # Image Upload
-uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("Upload an image (optional)", type=["jpg", "jpeg", "png"])
 
+# Load Image (uploaded or default)
 if uploaded_file is not None:
-    # Read the image
     image = Image.open(uploaded_file)
-    image = np.array(image)  # Convert to NumPy array
+    image = np.array(image)
+else:
+    # Load default image if no upload
+    image = Image.open(default_image)
+    image = np.array(image)
 
-    # Edge Detection Parameters
-    sigma = st.slider("Sigma (for Sobel filter)", 0.0, 5.0, 1.0)
+# Edge Detection Parameters
+low_threshold = st.slider("Low Threshold", 0, 255, 50)
+high_threshold = st.slider("High Threshold", 0, 255, 150)
 
-    # Perform Edge Detection
-    edges = edge_detection(image, sigma)
+# Perform Edge Detection
+edges = edge_detection(image, low_threshold, high_threshold)
 
-    # Display Images
-    st.image(image, caption="Original Image", use_column_width=True)
-    st.image(edges, caption="Edge Detected Image", use_column_width=True)
+# Display Images
+st.image(image, caption="Original Image", use_container_width=True)
+st.image(edges, caption="Edge Detected Image", use_container_width=True)
