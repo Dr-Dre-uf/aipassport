@@ -25,7 +25,7 @@ def adjust_contrast_brightness(image, contrast, brightness):
     # contrast: 1.0-3.0, brightness: -50 to 50
     return cv2.convertScaleAbs(image, alpha=contrast, beta=brightness)
 
-# Using the exact same image path for both activities as requested
+# Using the exact same image path for both activities
 DEFAULT_IMAGE_PATH = "assets/images/content/Identifying Structures in X-Ray Imaging.png"
 
 # --- ACTIVITY 1: X-RAY ---
@@ -79,9 +79,9 @@ elif activity == "Activity 2: CT vs MRI Analysis":
     
     with st.expander("Instructions", expanded=True):
         st.markdown("""
-        1. Observe the medical scan provided below.
-        2. Use the **Contrast** and **Brightness** sliders in the sidebar to simulate how a radiologist might adjust viewing parameters ("windowing").
-        3. Notice how adjusting these settings impacts the visibility of dense structures versus soft tissues.
+        1. Observe the side-by-side medical scans provided below.
+        2. Use the **Contrast** and **Brightness** sliders in the sidebar to adjust the right-hand image.
+        3. Notice how adjusting these settings impacts the visibility of dense structures versus soft tissues, simulating the visual difference between a CT scan and an MRI.
         4. Return to Canvas to list the key differences between the modalities and explain their preferred clinical scenarios.
         """)
     
@@ -96,7 +96,6 @@ elif activity == "Activity 2: CT vs MRI Analysis":
     if uploaded_file:
         img = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
     else:
-        # Reusing the identical image from Activity 1
         img = cv2.imread(DEFAULT_IMAGE_PATH)
         if img is None:
             st.error("Please upload a scan to begin, or ensure the default image is in the correct directory.")
@@ -115,6 +114,8 @@ elif activity == "Activity 2: CT vs MRI Analysis":
 
     adjusted_img = adjust_contrast_brightness(img, contrast, brightness)
 
-    st.image(adjusted_img, caption="Adjusted Scan View (Simulating CT vs MRI Windowing)", use_container_width=True)
+    col1, col2 = st.columns(2)
+    col1.image(img, caption="Baseline Scan (Simulated CT Focus)", use_container_width=True)
+    col2.image(adjusted_img, caption="Adjusted Scan (Simulated MRI Focus)", use_container_width=True)
     
-    st.info("Observation Tip for Canvas: Notice how adjusting the contrast mimics the difference between prioritizing dense bone (typical of a CT) versus visualizing variations in soft tissue layers (typical of an MRI).")
+    st.info("Observation Tip for Canvas: Compare the baseline image on the left with your adjusted image on the right. High contrast highlights dense bone (typical of a CT), while adjusting brightness and contrast together can reveal variations in soft tissue layers (typical of an MRI).")
